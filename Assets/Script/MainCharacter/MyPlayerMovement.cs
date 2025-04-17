@@ -84,16 +84,16 @@ public class MyPlayerMovement : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging &&  isHoldingRight)
         {
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
             
         }
         else if(playerAniamationScript.isSwinging){
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
         }
         else if (horizontal != 0f)
         {
 
-            rb.velocity = new Vector3(horizontal, 0, 0) * movementSpeed;
+            //rb.velocity = new Vector3(horizontal, 0, 0) * movementSpeed;
             if(horizontal > 0){
                 facingLeft = false;
             }else{
@@ -103,7 +103,7 @@ public class MyPlayerMovement : MonoBehaviour
         else
         {
 
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
         }
         if(balancePoint >= 7){
             isHoldingRight = false;

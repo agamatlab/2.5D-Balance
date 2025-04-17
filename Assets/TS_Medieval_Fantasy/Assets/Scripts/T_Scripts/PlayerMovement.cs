@@ -110,19 +110,9 @@ public class PlayerMovement : MonoBehaviour {
 			if(timer == target_Timer){	b_timer = false;	timer = 0;}
 		}
 
-		anim.SetFloat("Runspeed",Input.GetAxis("Horizontal"));						// play an animation when the player is running
-		if(Input.GetAxis("Horizontal")>0  || b_buttonRight){											// Change player direction
-			obj_Pivot_Player.transform.eulerAngles	= new Vector3(
-				obj_Pivot_Player.transform.rotation.eulerAngles.x,
-				90,
-				obj_Pivot_Player.transform.rotation.eulerAngles.z);
-		}
-		else if (Input.GetAxis("Horizontal")<0 || b_buttonLeft){									// Change player direction
-			obj_Pivot_Player.transform.eulerAngles	= new Vector3(
-				obj_Pivot_Player.transform.rotation.eulerAngles.x,
-				270,
-				obj_Pivot_Player.transform.rotation.eulerAngles.z);
-		}
+
+
+
 
 		RaycastHit hit;
 		float distanceToGround = 0;												// Check distance to the ground
