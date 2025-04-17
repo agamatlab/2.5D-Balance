@@ -1,2 +1,8 @@
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+Assets/Fantasy[[:space:]]knight/Texture/Armor/T_Armor_MetallicSmoothness.tga filter=lfs diff=lfs merge=lfs -text
+Assets/Fantasy[[:space:]]knight/Texture/Armor/T_Armor_MetallicSmoothness_2.tga filter=lfs diff=lfs merge=lfs -text
+Assets/Fantasy[[:space:]]knight/Texture/Body/T_Body_Base_color.tga filter=lfs diff=lfs merge=lfs -text
+Assets/Fantasy[[:space:]]knight/Texture/Body/T_Body_MetallicSmoothness.tga filter=lfs diff=lfs merge=lfs -text
+Assets/TS_Medieval_Fantasy/Assets/Textures/Sky/Sky_Night.psd filter=lfs diff=lfs merge=lfs -text
+Assets/TS_Medieval_Fantasy/Demo/DEMO_v2.unity filter=lfs diff=lfs merge=lfs -text
