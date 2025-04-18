@@ -27,6 +27,13 @@ public class PlayerAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop backwards"))
+        {
+            GetComponentInParent<Rigidbody>().velocity = Vector3.zero;
+            playerAnimator.SetBool("directionChange", false);
+        }
+
         if (isSwinging)
         {
             playerAnimator.SetBool("swing1", false);
@@ -63,18 +70,35 @@ public class PlayerAnimator : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         if (horizontal > 0)
         {
-            direction += animationConstant;
+            if(direction < -0.5f)
+            {
+                playerAnimator.SetBool("directionChange", true);
+                direction = -0.05f;
+            }
+            else
+            {
+                direction += animationConstant;
+            }
         }
         else if (horizontal < 0)
         {
+            if (direction > 0.5f)
+            {
+                playerAnimator.SetBool("directionChange", true);
+                direction = 0.05f;
+            }
+            else
+            {
+                direction -= animationConstant;
+            }
 
-            direction -= animationConstant;
         }
         else
         {
-            if (direction < -0.1 || direction > 0.1)
+            if (direction < -0.001 || direction > 0.001)
             {
-                direction -= (direction / direction) * animationConstant;
+                float step = (direction / Mathf.Abs(direction)) * animationConstant;
+                direction -= step;
             }
         }
 

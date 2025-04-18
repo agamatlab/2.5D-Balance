@@ -35,9 +35,10 @@ public class PlayerMovement : MonoBehaviour {
 	public bool 					b_buttonLeft 		= false;
 	public bool 					b_buttonRight 		= false;
 	public bool 					b_buttonJump 		= false;
-
+	public Animator playerAnimator;
 	// Use this for initialization
 	void Start () {
+		playerAnimator = GetComponentInChildren<Animator>();
 		rb = GetComponent<Rigidbody>();
 		anim = obj_Player.GetComponent<Animator>();
 		col = GetComponent<CapsuleCollider>();
@@ -46,9 +47,23 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {			
-		
-		rb.velocity = new Vector3(Input_Value* Speed*smoothInputValue*smoothInputValue,rb.velocity.y,rb.velocity.z);		// Move the player rigidbody
+	void FixedUpdate () {
+		if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop backwards"))
+		{
+			// Calculate a smooth deceleration
+			Vector2 currentVelocity = rb.velocity;
+			float decelerationRate = 5f; // Adjust this value to control how quickly the character stops
+    
+			// Apply a gradual deceleration to the horizontal velocity
+			float targetHorizontalVelocity = 0f;
+			float newHorizontalVelocity = Mathf.Lerp(currentVelocity.x, targetHorizontalVelocity, Time.deltaTime * decelerationRate);
+    
+			// Apply the new velocity, keeping the vertical component unchanged
+			rb.velocity = new Vector2(newHorizontalVelocity, currentVelocity.y);
+    
+			return;
+		}
+				rb.velocity = new Vector3(Input_Value* Speed*smoothInputValue*smoothInputValue,rb.velocity.y,rb.velocity.z);		// Move the player rigidbody
 
 		if (b_timer) {		
 			rb.velocity = new Vector3(rb.velocity.x,jumpForce,rb.velocity.z);			// PLayer jump
