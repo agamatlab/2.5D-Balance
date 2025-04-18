@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/TS_Medieval_Fantasy/Demo/DEMO_v2.unity
+    guid: 834bd7ef3053afe46834f69809f028f4
   m_configObjects: {}
