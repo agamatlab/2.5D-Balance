@@ -22,6 +22,12 @@ public class MyPlayerMovement : MonoBehaviour
     public bool isHoldingRight;
 
     public bool facingLeft;
+        public Slider healthbar;
+    public Camera mainCamera;
+    public Vector3 offset = new Vector3(0, 1, 0);
+    public float health = 100;
+    public bool hasCollided;
+    public enemyAnimator enemyAnimatorScript;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,6 +47,9 @@ public class MyPlayerMovement : MonoBehaviour
         isHoldingRight = true;
         facingLeft = false;
         initBalanceIndicator();
+        
+                offset = new Vector3(0, 1, 0);
+        health = 100;
 
     }
     void initBalanceIndicator()
@@ -81,6 +90,10 @@ public class MyPlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
 
+                Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + offset);
+        healthbar.transform.position = screenPosition;
+        healthbar.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+        healthbar.value = health;
         
         if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging &&  isHoldingRight)
         {

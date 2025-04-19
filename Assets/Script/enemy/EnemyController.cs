@@ -6,17 +6,18 @@ public class EnemyController : MonoBehaviour
 {
     public bool alive;
     public int health;
-    private PlayerAnimator playerAnimator;
+    public PlayerAnimator playerAnimator;
     public GameObject enemy;
+    public GameObject player;
     public bool hasCollided;
     // Start is called before the first frame update
     void Start()
     {
-        enemy = transform.parent.gameObject;
+        //enemy = transform.gameObject;
         //enemy = GameObject.Find("Banana Man");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //player =GameObject.FindWithTag("Player");
         Transform exportedKnight = player.transform.Find("exported knight");
-        playerAnimator = player.GetComponentInChildren<PlayerAnimator>();
+        playerAnimator = exportedKnight.GetComponent<PlayerAnimator>();
         alive = true;
         health = 100;
         hasCollided = false;
@@ -25,10 +26,10 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health < 0)
+        if (health <= 0)
         {
             alive = false;
-            Destroy(enemy);
+            //Destroy(enemy);
         }
     }
 
