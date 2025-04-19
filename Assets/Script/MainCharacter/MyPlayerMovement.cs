@@ -126,4 +126,43 @@ public class MyPlayerMovement : MonoBehaviour
         //updateBalancePointUI();
 
     }
+    Transform FindParentByName(Transform child, string name)
+    {
+        if (child == null)
+            return null;
+
+
+        if (child.name == name)
+            return child;
+
+
+        return FindParentByName(child.parent, name);
+    }
+        void OnTriggerEnter(Collider other)
+    {
+        if (hasCollided)
+        {
+            return;
+        }
+
+        if (other.gameObject.CompareTag("enemyweapon"))
+        {
+            Transform swordEnemy = FindParentByName(other.gameObject.transform, "enemy");
+            enemyAnimatorScript = swordEnemy.GetComponent<enemyAnimator>();
+            if (enemyAnimatorScript.attack)
+            {
+                health -= 40;
+                hasCollided = true;
+            }
+        }
+
+    }
+    void OnTriggerExit(Collider other)
+    {
+
+        if (other.gameObject.CompareTag("enemyweapon"))
+        {
+            hasCollided = false;
+        }
+    }
 }
