@@ -30,7 +30,7 @@ public class AimingHandler : MonoBehaviour
     private float shootCooldown = 0.5f;
 
     private float nextFireTime = 0f;
-    private Vector3 aimDirection;
+    private Vector3 currentAimDirection;
 
     void Start()
     {
@@ -75,8 +75,9 @@ public class AimingHandler : MonoBehaviour
         );
         // 4) Direction vector from this object to the mouse
         Vector3 dir = mouseWorld - transform.position;
-        // Store the aim direction for shooting (normalize to get unit vector)
-        aimDirection = dir.normalized;
+
+        // Store the current aim direction for shooting
+        currentAimDirection = dir.normalized;
 
         // 5) Compute angle in degrees (2D plane: Z‑axis rotation)
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -104,38 +105,48 @@ public class AimingHandler : MonoBehaviour
             return;
         }
 
-        // Create the fireball at the aim position
-        GameObject fireball = Instantiate(fireballPrefab, aimTransform.position, aimTransform.rotation);
+        // Capture the direction at the moment of firing
+        Vector3 firingDirection = currentAimDirection;
 
-        // Get the rigidbody from the fireball (if it has one)
-        Rigidbody rb = fireball.GetComponent<Rigidbody>();
-        if (rb != null)
+        // Create the fireball at the aim position
+        GameObject fireball = Instantiate(fireballPrefab, aimTransform.position, Quaternion.identity);
+
+        // Add a FireballMover component to handle movement
+        FireballMover mover = fireball.AddComponent<FireballMover>();
+        mover.Initialize(firingDirection, fireballSpeed);
+    }
+}
+
+// Separate component to handle fireball movement
+public class FireballMover : MonoBehaviour
+{
+    private Vector3 direction;
+    private float speed;
+    private float lifetime = 5f;
+    private float timer = 0f;
+
+    public void Initialize(Vector3 dir, float spd)
+    {
+        direction = dir;
+        speed = spd;
+
+        // Set the rotation to match the direction
+        if (direction != Vector3.zero)
         {
-            // Apply force in the direction of aim
-            rb.velocity = aimDirection * fireballSpeed;
-        }
-        else
-        {
-            // If no rigidbody, we can add a script to the fireball to move it
-            // This is just a simple example - you might want to use your own script
-            StartCoroutine(MoveFireball(fireball));
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
         }
     }
 
-    IEnumerator MoveFireball(GameObject fireball)
+    void Update()
     {
-        float lifetime = 5f; // Fireball lifetime in seconds
-        float timer = 0f;
+        // Move the fireball in the fixed direction
+        transform.position += direction * speed * Time.deltaTime;
 
-        while (timer < lifetime && fireball != null)
+        // Handle lifetime
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
         {
-            fireball.transform.position += aimDirection * fireballSpeed * Time.deltaTime;
-            timer += Time.deltaTime;
-            yield return null;
+            Destroy(gameObject);
         }
-
-        // Destroy the fireball after its lifetime
-        if (fireball != null)
-            Destroy(fireball);
     }
 }
