@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class SkillHandler : MonoBehaviour
 {
+    [SerializeField]
     Material runeMaterial;
+
     GameObject rune;
     int alphaID;
     float timePressed;
@@ -19,7 +21,6 @@ public class SkillHandler : MonoBehaviour
     {
         alphaID = Shader.PropertyToID("_alpha");
         rune = GameObject.FindWithTag("Rune");
-        runeMaterial = rune.GetComponent<Renderer>().material;
         originalScale = rune.transform.localScale;
         rune.transform.localScale = Vector3.zero; 
         // Ensure rune starts invisible (alpha = 1 means hidden)
@@ -43,7 +44,7 @@ public class SkillHandler : MonoBehaviour
         {
             float holdTime = Time.time - timePressed;
 
-            LeanTween.scale(rune, originalScale, 0.5f)
+            LeanTween.scale(rune, originalScale, 5f)
                 .setEase(LeanTweenType.easeOutQuad);
 
             // Only activate after holding for 3 seconds
@@ -52,7 +53,7 @@ public class SkillHandler : MonoBehaviour
                 isActivated = true;
                 rune.SetActive(true);
                 // Decrease alpha from 1 to 0 to make it visible
-                LeanTween.value(rune, 1f, 0f, 0.5f)
+                LeanTween.value(rune, 1f, 0f, 1f)
                     .setEase(LeanTweenType.easeOutQuad)
                     .setOnUpdate((float val) =>
                     {
@@ -71,10 +72,10 @@ public class SkillHandler : MonoBehaviour
                 LeanTween.cancel(rune);
                 LeanTween.cancel(gameObject);
 
-                LeanTween.scale(rune, Vector3.zero, 0.5f)
+                LeanTween.scale(rune, Vector3.zero, 1f)
                     .setEase(LeanTweenType.easeInQuad);
 
-                LeanTween.value(rune, 0f, 1f, 0.5f)
+                LeanTween.value(rune, 0f, 1f, 1f)
                     .setEase(LeanTweenType.easeInQuad)
                     .setOnUpdate((float val) => {
                         runeMaterial.SetFloat(alphaID, val);

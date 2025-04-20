@@ -45,9 +45,6 @@ public class RuneParentHandler : MonoBehaviour
     void Update()
     {
         // Update the rotation
-        gameObject.transform.rotation = Quaternion.Euler(rotation, -90, 0);
-        rotation++;
-        rotation %= 360;
 
         if (playerTransform != null)
         {
