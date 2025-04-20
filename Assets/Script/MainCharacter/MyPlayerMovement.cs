@@ -147,7 +147,7 @@ public class MyPlayerMovement : MonoBehaviour
 
         if (other.gameObject.CompareTag("enemyweapon"))
         {
-            Transform swordEnemy = FindParentByName(other.gameObject.transform, "enemy");
+            Transform swordEnemy = FindParentByName(other.gameObject.transform, "swordenemy");
             enemyAnimatorScript = swordEnemy.GetComponent<enemyAnimator>();
             if (enemyAnimatorScript.attack)
             {

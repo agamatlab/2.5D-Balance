@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
         if (health <= 0)
         {
             alive = false;
-            //Destroy(enemy);
+            Destroy(enemy);
         }
     }
 
