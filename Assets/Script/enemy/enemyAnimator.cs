@@ -104,7 +104,7 @@ public class enemyAnimator : MonoBehaviour
             alertIndicator.color = Color.red;
             if (transform.position.x - playerBody.position.x > 0)
             {
-                if (transform.position.x - playerBody.position.x > 1.5)
+                if (transform.position.x - playerBody.position.x > 1)
                 {
                     animator.SetBool("attack", false);
                     attack = false;
@@ -120,7 +120,7 @@ public class enemyAnimator : MonoBehaviour
             }
             else
             {
-                if (transform.position.x - playerBody.position.x < -1.5)
+                if (transform.position.x - playerBody.position.x < -1)
                 {
                     attack = false;
                     animator.SetBool("attack", false);
