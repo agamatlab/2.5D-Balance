@@ -10,17 +10,17 @@ public class enemyAnimator : MonoBehaviour
     private float Timer = 0f;
     public bool alert = false;
     private Canvas enemyCanvas;
-    private Image alertIndicator;
+    public Image alertIndicator;
 
-    public Vector3 UIoffset = new Vector3(0, 1, 0);
-    private Camera mainCamera;
+    public Vector3 UIoffset = new Vector3(0, 2, 0);
+    public Camera mainCamera;
 
     public float patrolSpeed;
     public float alertSpeed;
     public float alertRange;
     private Transform playerBody;
     public bool runningLeft;
-
+    public bool attack;
 
     // Start is called before the first frame update
     void Start()
@@ -30,11 +30,9 @@ public class enemyAnimator : MonoBehaviour
         Timer = -1f;
         alert = false;
         enemyCanvas = GetComponentInChildren<Canvas>();
-        alertIndicator = enemyCanvas.transform.Find("patrol").GetComponent<Image>();
-        UIoffset = new Vector3(0, 1.5f, 0);
-        mainCamera = Camera.main;
-        patrolSpeed = 0.002f;
-        alertSpeed = 0.004f;
+        UIoffset = new Vector3(0, 2, 0);
+        patrolSpeed = 0.004f;
+        alertSpeed = 0.008f;
         runningLeft = false;
         alertRange = 4f;
         playerBody = GameObject.Find("Player").transform;
@@ -43,19 +41,22 @@ public class enemyAnimator : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(0.05f * Screen.width, -0.2f * Screen.height);
         rectTransform.sizeDelta = new Vector2(0.02f * Screen.width, 0.02f * Screen.width);
         alertIndicator.color = Color.green;
+        attack = false;
     }
 
 
     bool checkPlayerInRange()
     {
-        
+
         float x1 = transform.position.x;
         float x2 = playerBody.position.x;
         float diff = x1 - x2;
-        if(diff > 0 && diff < alertRange && runningLeft ){
+        if (diff > 0 && diff < alertRange && runningLeft)
+        {
             return true;
         }
-        if(diff < 0 && diff > -alertRange && !runningLeft){
+        if (diff < 0 && diff > -alertRange && !runningLeft)
+        {
             return true;
         }
         return false;
@@ -65,7 +66,7 @@ public class enemyAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + UIoffset);
         alertIndicator.transform.position = screenPosition;
         alertIndicator.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
@@ -101,15 +102,37 @@ public class enemyAnimator : MonoBehaviour
         else
         {
             alertIndicator.color = Color.red;
-            if(transform.position.x - playerBody.position.x > 0){
-                                transform.position += new Vector3(-alertSpeed, 0, 0);
-                animator.SetBool("runningLeft", true);
-                runningLeft = true;
+            if (transform.position.x - playerBody.position.x > 0)
+            {
+                if (transform.position.x - playerBody.position.x > 1.5)
+                {
+                    animator.SetBool("attack", false);
+                    attack = false;
+                    transform.position += new Vector3(-alertSpeed, 0, 0);
+                    animator.SetBool("runningLeft", true);
+                    runningLeft = true;
+                }
+                else
+                {
+                    attack = true;
+                    animator.SetBool("attack", true);
+                }
             }
-            else{
-                                transform.position += new Vector3(alertSpeed, 0, 0);
-                animator.SetBool("runningLeft", false);
-                runningLeft = false;
+            else
+            {
+                if (transform.position.x - playerBody.position.x < -1.5)
+                {
+                    attack = false;
+                    animator.SetBool("attack", false);
+                    transform.position += new Vector3(alertSpeed, 0, 0);
+                    animator.SetBool("runningLeft", false);
+                    runningLeft = false;
+                }
+                else
+                {
+                    attack = true;
+                    animator.SetBool("attack", true);
+                }
             }
         }
     }

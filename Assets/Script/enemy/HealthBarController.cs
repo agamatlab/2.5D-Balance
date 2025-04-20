@@ -7,21 +7,21 @@ public class HealthBarController : MonoBehaviour
 {
     public Slider healthbar;
     public Transform enemyTransform;
-    public Vector3 offset = new Vector3(0, 1, 0);
-    private Camera mainCamera;
+    public Vector3 offset = new Vector3(0, 2, 0);
+    public Camera mainCamera;
     public EnemyController enemyController;
     // Start is called before the first frame update
     void Start()
     {
         //GameObject enemy = GameObject.Find("Banana Man");
-        enemyTransform = transform.parent.parent;
-        GameObject enemy =enemyTransform.gameObject;
-        Transform body = enemy.transform.Find("Body");
-        enemyController = body.GetComponent<EnemyController>();
+        //enemyTransform = transform.parent.parent;
+        //GameObject enemy =enemyTransform.gameObject;
+        //Transform body = enemy.transform.Find("Body");
+        enemyController = enemyTransform.GetComponent<EnemyController>();
 
-        healthbar = GetComponent<Slider>();
-        offset = new Vector3(0, 1, 0);
-        mainCamera = Camera.main;
+        //healthbar = GetComponent<Slider>();
+        offset = new Vector3(0, 1.6f, 0);
+        //mainCamera = Camera.main;
     }
 
     // Update is called once per frame

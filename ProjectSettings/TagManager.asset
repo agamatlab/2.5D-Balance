@@ -8,11 +8,13 @@ TagManager:
   - weaponR
   - Rune
   - Knight
+  - enemy
+  - enemyweapon
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Weapon
   - Water
   - UI
   - 
