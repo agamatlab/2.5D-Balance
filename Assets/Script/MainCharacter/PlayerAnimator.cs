@@ -27,6 +27,10 @@ public class PlayerAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit") )
+        {
+            playerAnimator.SetBool("hit", false);
+        }   
         
         if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop backwards"))
         {

@@ -3,7 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MyPlayerMovement : MonoBehaviour
+public interface IDamageable
+{
+    Vector3 Position { get; }
+    void Damage(float damage);
+}
+public interface IDamagable
+{
+    int MaxHealth { get; }
+    int Health { get; set; }
+    public void TakeDamage(int damage);
+}
+
+public class MyPlayerMovement : MonoBehaviour, IDamagable
 {
     public Rigidbody rb;
     [SerializeField]
@@ -25,9 +37,27 @@ public class MyPlayerMovement : MonoBehaviour
         public Slider healthbar;
     public Camera mainCamera;
     public Vector3 offset = new Vector3(0, 1, 0);
-    public float health = 100;
+
+    int _maxHealth = 100;
+    int _health = 100;
+
     public bool hasCollided;
     public enemyAnimator enemyAnimatorScript;
+
+    public int MaxHealth => _maxHealth;
+
+    public int Health
+    {
+        get => _health;
+        set => _health = value;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -48,8 +78,8 @@ public class MyPlayerMovement : MonoBehaviour
         facingLeft = false;
         initBalanceIndicator();
         
-                offset = new Vector3(0, 1, 0);
-        health = 100;
+        offset = new Vector3(0, 1, 0);
+        Health = 100;
 
     }
     void initBalanceIndicator()
@@ -93,7 +123,7 @@ public class MyPlayerMovement : MonoBehaviour
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + offset);
         healthbar.transform.position = screenPosition;
         healthbar.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
-        healthbar.value = health;
+        healthbar.value = Health;
         
         if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging &&  isHoldingRight)
         {
@@ -138,7 +168,7 @@ public class MyPlayerMovement : MonoBehaviour
 
         return FindParentByName(child.parent, name);
     }
-        void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (hasCollided)
         {
@@ -151,12 +181,14 @@ public class MyPlayerMovement : MonoBehaviour
             enemyAnimatorScript = swordEnemy.GetComponent<enemyAnimator>();
             if (enemyAnimatorScript.attack)
             {
-                health -= 40;
+                Health -= 40;
                 hasCollided = true;
             }
         }
 
     }
+
+
     void OnTriggerExit(Collider other)
     {
 
@@ -165,4 +197,5 @@ public class MyPlayerMovement : MonoBehaviour
             hasCollided = false;
         }
     }
+
 }
