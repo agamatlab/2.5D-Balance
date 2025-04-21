@@ -3,24 +3,37 @@ using System.Collections;
 
 /// <summary>
 /// Controls time slowdown effects on collisions for a more impactful game feel.
+/// This is implemented as a static utility that can be called from anywhere.
 /// </summary>
 public class HitSlowMo : MonoBehaviour
 {
-    #region Singleton
-    public static HitSlowMo Instance { get; private set; }
+    // Static instance for the singleton pattern
+    private static HitSlowMo _instance;
+    public static HitSlowMo Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject go = new GameObject("HitSlowMo");
+                _instance = go.AddComponent<HitSlowMo>();
+                DontDestroyOnLoad(go);
+            }
+            return _instance;
+        }
+    }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    #endregion
 
     [Header("Slowdown Settings")]
     [Range(0.01f, 1f)]
@@ -75,6 +88,15 @@ public class HitSlowMo : MonoBehaviour
     {
         defaultTimeScale = Time.timeScale;
         mainCamera = Camera.main;
+    }
+
+    /// <summary>
+    /// Static method to trigger slowdown from anywhere without needing a reference.
+    /// </summary>
+    /// <param name="collisionForce">Optional: The force of the collision to scale the slowdown effect.</param>
+    public static void Trigger(float collisionForce = 0f)
+    {
+        Instance.TriggerSlowmotion(collisionForce);
     }
 
     /// <summary>
@@ -166,7 +188,11 @@ public class HitSlowMo : MonoBehaviour
     /// </summary>
     private IEnumerator ShakeCamera(float intensity)
     {
-        if (mainCamera == null) yield break;
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+            if (mainCamera == null) yield break;
+        }
 
         originalCameraPosition = mainCamera.transform.localPosition;
         float elapsed = 0f;

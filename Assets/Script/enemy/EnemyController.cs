@@ -42,6 +42,15 @@ public class EnemyController : MonoBehaviour
 
         if (playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
+            Rigidbody weaponRb = other.attachedRigidbody;
+            float collisionForce = 30f; // Default force
+
+            if (weaponRb != null)
+            {
+                // Calculate force based on velocity magnitude
+                collisionForce = weaponRb.velocity.magnitude * weaponRb.mass;
+            }
+            HitSlowMo.Trigger(collisionForce);
             health -= 40;
             hasCollided = true;
         }

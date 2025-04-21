@@ -42,6 +42,13 @@ public class PlayerAnimator : MonoBehaviour
 
         isSwinging = playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal");
 
+        if (isSwinging)
+        {
+            playerAnimator.SetBool("swing1", false);
+
+        }
+
+        float horizontal = Input.GetAxis("Horizontal");
         if (Input.GetMouseButtonDown(0) && !isSwinging && (playerMovementScript.balancePoint == 6 || playerMovementScript.isHoldingRight))
         {
             playerAnimator.SetBool("swing1", true);
@@ -63,13 +70,25 @@ public class PlayerAnimator : MonoBehaviour
             }
 
         }
+        else
+        {
+            if(horizontal > 0)
+            {
+                playerMovementScript.facingLeft = false;
+            }else if(horizontal < 0)
+            {
+                playerMovementScript.facingLeft = true;
+            }
+
+
+        }
 
 
         playerAnimator.SetFloat("directionRange", direction);
 
-        float horizontal = Input.GetAxis("Horizontal");
         if (horizontal > 0)
         {
+            
             if(direction < -0.5f)
             {
                 playerAnimator.SetBool("directionChange", true);
@@ -95,11 +114,13 @@ public class PlayerAnimator : MonoBehaviour
         }
         else
         {
-            if (direction < -0.001 || direction > 0.001)
-            {
-                float step = (direction / Mathf.Abs(direction)) * animationConstant;
-                direction -= step;
-            }
+            direction = 0;
+        }
+
+        if(!(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk right") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk left")))
+        {
+            print("Direction zero");
+            direction = 0;
         }
 
         direction = Mathf.Clamp(direction, -1, 1);
