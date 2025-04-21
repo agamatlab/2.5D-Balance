@@ -119,7 +119,6 @@ public class PlayerAnimator : MonoBehaviour
 
         if(!(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk right") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk left")))
         {
-            print("Direction zero");
             direction = 0;
         }
 
