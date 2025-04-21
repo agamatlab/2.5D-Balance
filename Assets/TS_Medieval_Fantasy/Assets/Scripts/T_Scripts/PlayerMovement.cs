@@ -75,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(newHorizontalVelocity, rb.velocity.y, rb.velocity.z);
 
             // Debug to verify deceleration is happening
-            Debug.Log("Stopping: Current Velocity = " + newHorizontalVelocity);
 
             return;
         }
