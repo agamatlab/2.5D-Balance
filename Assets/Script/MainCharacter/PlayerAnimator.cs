@@ -22,6 +22,7 @@ public class PlayerAnimator : MonoBehaviour
         animationConstant = 1 / animationSpeed;
         playerAnimator = GetComponent<Animator>();
         playerMovementScript = GetComponentInParent<MyPlayerMovement>();
+        playerAnimator.SetFloat("direcitonRange", 0);
     }
 
     // Update is called once per frame
@@ -88,43 +89,37 @@ public class PlayerAnimator : MonoBehaviour
         }
 
 
-        playerAnimator.SetFloat("directionRange", direction);
 
+        float directionSlow = 5;
         if (horizontal > 0)
         {
             
-            if(direction < -0.5f)
+            if(direction < 0)
             {
                 playerAnimator.SetBool("directionChange", true);
-                direction = -0.05f;
             }
-            else
-            {
-                direction += animationConstant;
-            }
+            direction += animationConstant/directionSlow;
         }
         else if (horizontal < 0)
         {
-            if (direction > 0.5f)
+            if (direction > 0)
             {
                 playerAnimator.SetBool("directionChange", true);
-                direction = 0.05f;
             }
-            else
-            {
-                direction -= animationConstant;
-            }
+            direction -= animationConstant/ directionSlow;
 
         }
         else
         {
-            direction = 0;
+            if (direction != 0)
+            {
+                direction -=  (direction/Mathf.Abs(direction)) *animationConstant/ directionSlow;
+            }
         }
 
-        if(!(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk right") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("walk left")))
-        {
-            direction = 0;
-        }
+
+        playerAnimator.SetFloat("directionRange", direction);
+
 
         direction = Mathf.Clamp(direction, -1, 1);
         playerAnimator.SetBool("facingLeft", playerMovementScript.facingLeft);
