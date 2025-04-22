@@ -61,7 +61,7 @@ public class PlayerAnimator : MonoBehaviour
 
             float screenWidth = Screen.width;
             playerAnimator.SetFloat("directionBinary", 1);
-            //playerMovementScript.balancePoint +=1;
+            playerMovementScript.balancePoint +=1;
             if (mousePosition.x < screenWidth / 2)
             {
                 playerAnimator.SetFloat("directionBinary", 0);

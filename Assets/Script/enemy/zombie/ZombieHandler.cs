@@ -27,7 +27,7 @@ public class ZombieHandler : MonoBehaviour
     public bool hasCollided = false;
     public PlayerAnimator playerAnimator;
     public TextMeshProUGUI breakIndicator;
-
+        private float hitTimer;
     public enum AttackState
     {
         Started, Finished
@@ -66,6 +66,7 @@ public class ZombieHandler : MonoBehaviour
     }
     void Start()
     {
+        hitTimer = 0;
         zombieAnimator = GetComponent<Animator>();
         knight = GameObject.FindWithTag("Knight");
         //initialize UI for alert
@@ -88,7 +89,7 @@ public class ZombieHandler : MonoBehaviour
     void Update()
     {
 
-
+        hitTimer += Time.deltaTime;
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + UIoffset);
         alertIndicator.transform.position = screenPosition;
         alertIndicator.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
@@ -172,13 +173,14 @@ public class ZombieHandler : MonoBehaviour
         {
             return;
         }
-
-        if (playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
+        
+        if (hitTimer > 1 &&playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             if(health <=0){
                 Destroy(zombie);
             }
             health -= 100;
+            hitTimer = 0;
             hasCollided = true;
         }
         

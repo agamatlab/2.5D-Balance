@@ -23,21 +23,16 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     Animator playerAnimator;
     PlayerAnimator playerAniamationScript;
     //private Canvas balanceIndicatorCanvas;
-    private Image balanceIndicatorLeft;
-    private Image balanceIndicatorLeftMid;
-    private Image balanceIndicatorMid;
-    private Image balanceIndicatorRightMid;
 
-    private Image balanceIndicatorRight;
-    public int balancePoint;
-
+    public float balancePoint;
+    public Image b1, b2, b3;
     public bool isHoldingRight;
 
     public bool facingLeft;
-        public Slider healthbar;
+    public Slider healthbar;
     public Camera mainCamera;
-    public Vector3 offset = new Vector3(0, 1, 0);
-
+    public Vector3 HealthBarOffset;
+    public Vector3 BalanceUIOffset;
     int _maxHealth = 100;
     int _health = 100;
 
@@ -63,83 +58,105 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         rb = GetComponent<Rigidbody>();
         playerAnimator = GetComponentInChildren<Animator>();
         playerAniamationScript = GetComponentInChildren<PlayerAnimator>();
-        //balanceIndicatorCanvas = GetComponentInChildren<Canvas>();
-        //balanceIndicatorLeft = balanceIndicatorCanvas.transform.Find("left").GetComponent<Image>();
-        //balanceIndicatorLeftMid = balanceIndicatorCanvas.transform.Find("leftmid").GetComponent<Image>();
 
-        //balanceIndicatorMid = balanceIndicatorCanvas.transform.Find("mid").GetComponent<Image>();
 
-        //balanceIndicatorRightMid = balanceIndicatorCanvas.transform.Find("rightmid").GetComponent<Image>();
-
-        //balanceIndicatorRight = balanceIndicatorCanvas.transform.Find("right").GetComponent<Image>();
-        
-        balancePoint = 4;
+        balancePoint = 0;
         isHoldingRight = true;
         facingLeft = false;
+
+
+        HealthBarOffset = new Vector3(0, 1, 0);
+        BalanceUIOffset = new Vector3(-1, 1.3f, 0);
+        Health = 100;
         initBalanceIndicator();
         
-        offset = new Vector3(0, 1, 0);
-        Health = 100;
-
     }
     void initBalanceIndicator()
     {
-        //RectTransform rectTransform1 = balanceIndicatorLeft.GetComponent<RectTransform>();s
+        RectTransform rectTransform1 = b1.GetComponent<RectTransform>();
         //rectTransform1.anchoredPosition = new Vector2(0.05f*Screen.width, -0.2f * Screen.height);
 
 
-        //RectTransform rectTransform2 = balanceIndicatorLeftMid.GetComponent<RectTransform>();
+        RectTransform rectTransform2 = b2.GetComponent<RectTransform>();
         //rectTransform2.anchoredPosition = new Vector2(0.1f*Screen.width, -0.2f * Screen.height);
 
 
-        //RectTransform rectTransform3 = balanceIndicatorMid.GetComponent<RectTransform>();
+        RectTransform rectTransform3 = b3.GetComponent<RectTransform>();
         //rectTransform3.anchoredPosition = new Vector2(0.15f*Screen.width, -0.2f * Screen.height);
 
 
-        //RectTransform rectTransform4 = balanceIndicatorRightMid.GetComponent<RectTransform>();
-        //rectTransform4.anchoredPosition = new Vector2(0.2f*Screen.width, -0.2f * Screen.height);
+        rectTransform1.sizeDelta = rectTransform2.sizeDelta = rectTransform3.sizeDelta = new Vector2(0.05f * Screen.width, 0.01f * Screen.width);
 
-
-        //RectTransform rectTransform5 = balanceIndicatorRight.GetComponent<RectTransform>();
-        //rectTransform5.anchoredPosition = new Vector2(0.25f*Screen.width, -0.2f * Screen.height);
-
-        //rectTransform1.sizeDelta =rectTransform2.sizeDelta =rectTransform3.sizeDelta =rectTransform4.sizeDelta =rectTransform5.sizeDelta = new Vector2(0.04f*Screen.width,0.04f*Screen.width);
-
-        //balanceIndicatorMid.color = Color.red;
+        b1.color = Color.white;
+        b2.color = Color.Lerp(Color.white, Color.gray, 0.5f);
+        b3.color = Color.gray;
     }
 
     void updateBalancePointUI()
     {
-        //balanceIndicatorLeft.color = (balancePoint == 2) ? Color.red : Color.white;
-        //balanceIndicatorLeftMid.color = (balancePoint == 3) ? Color.red : Color.white;
-        //balanceIndicatorMid.color = (balancePoint == 4) ? Color.red : Color.white;
-        //balanceIndicatorRightMid.color = (balancePoint == 5) ? Color.red : Color.white;
-        //balanceIndicatorRight.color = (balancePoint == 6) ? Color.red : Color.white;
+        if(balancePoint <=3 && balancePoint >=2){
+            b1.color =b2.color= Color.red;
+            b3.color = Color.red;
+            b3.fillAmount = balancePoint - 2;
+        }
+        else if(balancePoint <2 && balancePoint >=1){
+            b1.color = Color.red;
+            b2.color = Color.red;
+            b2.fillAmount = balancePoint - 1;
+            b3.color = Color.gray;
+        }
+        else{
+            b1.color = Color.red;
+            b1.fillAmount = balancePoint;
+            b2.color = Color.Lerp(Color.white, Color.gray, 0.5f);
+            b3.color = Color.gray;
+        }
     }
     void Update()
     {
+
+        if (balancePoint > 0)
+        {
+            balancePoint -= Time.deltaTime * 0.5f;
+        }
+        else
+        {
+            balancePoint = 0;
+        }
         float horizontal = Input.GetAxis("Horizontal");
 
-                Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + offset);
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + HealthBarOffset);
         healthbar.transform.position = screenPosition;
         healthbar.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
         healthbar.value = Health;
-        
-        if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging &&  isHoldingRight)
+
+        Vector3 screenPosition2 = mainCamera.WorldToScreenPoint(transform.position + BalanceUIOffset);
+        b1.transform.position = screenPosition2;
+        b1.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+        b2.transform.position = screenPosition2 + new Vector3(0.05f * Screen.width, 0, 0);
+        b2.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+        b3.transform.position = screenPosition2 + new Vector3(0.05f * Screen.width, 0, 0) * 2;
+        b3.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+
+        if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging && isHoldingRight)
         {
             //rb.velocity = Vector3.zero;
-            
+
         }
-        else if(playerAniamationScript.isSwinging){
+        else if (playerAniamationScript.isSwinging)
+        {
             //rb.velocity = Vector3.zero;
         }
         else if (horizontal != 0f)
         {
 
             //rb.velocity = new Vector3(horizontal, 0, 0) * movementSpeed;
-            if(horizontal > 0){
+            if (horizontal > 0)
+            {
                 facingLeft = false;
-            }else{
+            }
+            else
+            {
                 facingLeft = true;
             }
         }
@@ -148,12 +165,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
             //rb.velocity = Vector3.zero;
         }
-        if(balancePoint >= 7){
-            isHoldingRight = false;
-            balancePoint = 4;
-        }
+
         //rb.AddForce(Vector3.down * 10f, ForceMode.Acceleration);
-        //updateBalancePointUI();
+        updateBalancePointUI();
 
     }
     Transform FindParentByName(Transform child, string name)
