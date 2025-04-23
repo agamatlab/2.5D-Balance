@@ -21071,7 +21071,6 @@ GameObject:
   - component: {fileID: 756522719}
   - component: {fileID: 756522718}
   - component: {fileID: 756522717}
-  - component: {fileID: 756522716}
   m_Layer: 0
   m_Name: exitButton
   m_TagString: Untagged
@@ -21099,18 +21098,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -107.2}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &756522716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756522714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11516410b24941743816268914ee1ca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &756522717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21155,7 +21142,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 756522716}
+      - m_Target: {fileID: 1689044716}
         m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
@@ -42196,6 +42183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11516410b24941743816268914ee1ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: {fileID: 1602240834}
+  logo: {fileID: 908241424}
+  startButton: {fileID: 1689044712}
+  exitButton: {fileID: 756522715}
 --- !u!1 &1690921859 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 138416, guid: 0052478d63b01de4b81236cb135b93bb, type: 3}
