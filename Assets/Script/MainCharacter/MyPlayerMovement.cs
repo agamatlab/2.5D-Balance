@@ -25,7 +25,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     //private Canvas balanceIndicatorCanvas;
 
     public float balancePoint;
-    public Image b1, b2, b3;
+    public Slider b1, b2, b3;
     public bool isHoldingRight;
 
     public bool facingLeft;
@@ -66,7 +66,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
 
         HealthBarOffset = new Vector3(0, 1, 0);
-        BalanceUIOffset = new Vector3(-1, 1.3f, 0);
+        BalanceUIOffset = new Vector3(0, 1.3f, 0);
         Health = 100;
         initBalanceIndicator();
         
@@ -85,31 +85,32 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         //rectTransform3.anchoredPosition = new Vector2(0.15f*Screen.width, -0.2f * Screen.height);
 
 
-        rectTransform1.sizeDelta = rectTransform2.sizeDelta = rectTransform3.sizeDelta = new Vector2(0.05f * Screen.width, 0.01f * Screen.width);
+        rectTransform1.sizeDelta = rectTransform2.sizeDelta = rectTransform3.sizeDelta = new Vector2(40, 20);
 
-        b1.color = Color.white;
-        b2.color = Color.Lerp(Color.white, Color.gray, 0.5f);
-        b3.color = Color.gray;
+
     }
 
     void updateBalancePointUI()
     {
-        if(balancePoint <=3 && balancePoint >=2){
-            b1.color =b2.color= Color.red;
-            b3.color = Color.red;
-            b3.fillAmount = balancePoint - 2;
+        if(balancePoint > 3){
+            b1.value =b2.value =b3.value = 1;
+        }
+        else if(balancePoint <=3 && balancePoint >=2){
+            b1.value =b2.value= 1;
+            
+            b3.value = balancePoint - 2;
         }
         else if(balancePoint <2 && balancePoint >=1){
-            b1.color = Color.red;
-            b2.color = Color.red;
-            b2.fillAmount = balancePoint - 1;
-            b3.color = Color.gray;
+            b1.value = 1;
+
+            b2.value = balancePoint - 1;
+            b3.value = 0;
         }
         else{
-            b1.color = Color.red;
-            b1.fillAmount = balancePoint;
-            b2.color = Color.Lerp(Color.white, Color.gray, 0.5f);
-            b3.color = Color.gray;
+
+            b1.value = balancePoint;
+            
+            b2.value =b3.value = 0;
         }
     }
     void Update()
@@ -117,7 +118,8 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
         if (balancePoint > 0)
         {
-            balancePoint -= Time.deltaTime * 0.5f;
+            if(!playerAniamationScript.isSwinging){
+            balancePoint -= Time.deltaTime * 0.5f;}
         }
         else
         {
@@ -131,11 +133,11 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         healthbar.value = Health;
 
         Vector3 screenPosition2 = mainCamera.WorldToScreenPoint(transform.position + BalanceUIOffset);
-        b1.transform.position = screenPosition2;
+        b1.transform.position = screenPosition2+ new Vector3(-40, 0, 0);
         b1.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
-        b2.transform.position = screenPosition2 + new Vector3(0.05f * Screen.width, 0, 0);
+        b2.transform.position = screenPosition2 ;
         b2.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
-        b3.transform.position = screenPosition2 + new Vector3(0.05f * Screen.width, 0, 0) * 2;
+        b3.transform.position = screenPosition2 + new Vector3(40, 0, 0);
         b3.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
 
         if (Input.GetMouseButtonDown(0) && !playerAniamationScript.isSwinging && isHoldingRight)

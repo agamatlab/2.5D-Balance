@@ -38,8 +38,8 @@ public class enemyAnimator : MonoBehaviour
         playerBody = GameObject.Find("Player").transform;
         //initialize UI for alert
         RectTransform rectTransform = alertIndicator.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(0.05f * Screen.width, -0.2f * Screen.height);
-        rectTransform.sizeDelta = new Vector2(0.02f * Screen.width, 0.02f * Screen.width);
+        //rectTransform.anchoredPosition = new Vector2(20, -100);
+        rectTransform.sizeDelta = new Vector2(16, 16);
         alertIndicator.color = Color.green;
         attack = false;
     }
