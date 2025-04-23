@@ -10,4 +10,10 @@ public class StartMenu : MonoBehaviour
         
         SceneManager.LoadScene("DEMO_v2");
     }
+
+    public void ExitGame()
+    {
+        
+        Application.Quit();
+    }
 }
