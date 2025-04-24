@@ -25,10 +25,33 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetFloat("direcitonRange", 0);
     }
 
+    // Used for attacks and combos
+    public float comboTimerLimit = 2f;
+    private float comboTimer;
+    public float attackCooldownLimit;
+    private float attackCooldown = 0;
+    private int currentCombo = 0;
+
     // Update is called once per frame
     void Update()
     {
-        if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit") )
+
+        // Canceling all previously  set animations
+        playerAnimator.SetBool("swing1", false);
+        playerAnimator.SetBool("swing2", false);
+        playerAnimator.SetBool("swing3", false);
+
+        // Timer for attack cooldown and combo
+        if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
+        if (comboTimer > 0) comboTimer -= Time.deltaTime;
+
+        if (comboTimer <= 0)
+        {
+            currentCombo = 0;
+        }
+
+
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit") )
         {
             playerAnimator.SetBool("hit", false);
         }   
@@ -56,7 +79,39 @@ public class PlayerAnimator : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         if (Input.GetMouseButtonDown(0) && !isSwinging && (playerMovementScript.balancePoint == 6 || playerMovementScript.isHoldingRight))
         {
-            playerAnimator.SetBool("swing1", true);
+            if (currentCombo == 0 && attackCooldown <= 0)
+            {
+                playerAnimator.SetBool("swing1", true);
+                attackCooldown = attackCooldownLimit;
+                comboTimer = comboTimerLimit;
+                currentCombo++;
+                Debug.Log("first attack");
+            }
+            else if (currentCombo == 1 && attackCooldown <= 0)
+            {
+                playerAnimator.SetBool("swing2", true);
+                attackCooldown = attackCooldownLimit;
+                comboTimer = comboTimerLimit;
+                currentCombo++;
+
+                Debug.Log("second attack");
+
+            }
+            else if (currentCombo == 2 && attackCooldown <= 0)
+            {
+
+                playerAnimator.SetBool("swing3", true);
+                attackCooldown = attackCooldownLimit;
+                currentCombo = 0;
+
+                Debug.Log("third attack");
+            }
+            else
+            {
+                return;
+            }
+            //playerAnimator.SetBool("swing1", true);
+            
             Vector2 mousePosition = Input.mousePosition;
 
             float screenWidth = Screen.width;
