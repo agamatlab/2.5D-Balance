@@ -174,7 +174,7 @@ public class ZombieHandler : MonoBehaviour
             return;
         }
         
-        if (hitTimer > 1 &&playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
+        if (hitTimer > 1.5f &&playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             if(health <=0){
                 Destroy(zombie);

@@ -9,7 +9,7 @@ public class Instructor : MonoBehaviour
     public bool inRange;
     public GameObject canvas;
     public RectTransform instructionTransform;
-    public Vector3 offset = new Vector3(0, 3, 0);
+    public Vector3 offset = new Vector3(0, 5, 0);
     public Camera mainCamera;
 
     public bool IsWithinRange()
@@ -27,7 +27,7 @@ public class Instructor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        offset = new Vector3(0, 3, 0);
+        offset = new Vector3(0, 5, 0);
                 float screenWidth = Screen.width;
         float screenHeight = Screen.height;
         inRange = false;
