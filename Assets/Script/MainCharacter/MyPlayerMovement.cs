@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public interface IDamageable
 {
@@ -94,28 +95,34 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     {
         if(balancePoint > 3){
             b1.value =b2.value =b3.value = 1;
+            playerAnimator.SetFloat("swingspeed",0.7f);
         }
         else if(balancePoint <=3 && balancePoint >=2){
             b1.value =b2.value= 1;
             
             b3.value = balancePoint - 2;
+            playerAnimator.SetFloat("swingspeed",0.5f);
         }
         else if(balancePoint <2 && balancePoint >=1){
             b1.value = 1;
 
             b2.value = balancePoint - 1;
             b3.value = 0;
+            playerAnimator.SetFloat("swingspeed",1);
         }
         else{
 
             b1.value = balancePoint;
             
             b2.value =b3.value = 0;
+            playerAnimator.SetFloat("swingspeed",1.2f);
         }
     }
     void Update()
     {
-
+        if(Health <=0){
+            SceneManager.LoadScene("DEMO_v2");
+        }
         if (balancePoint > 0)
         {
             if(!playerAniamationScript.isSwinging){
