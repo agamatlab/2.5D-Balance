@@ -54,13 +54,4 @@ public class RagdollManager : MonoBehaviour
         animator.enabled = false;
         SetRagdollState(true);
     }
-    private void Update()
-    {
-        // For testing
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("Space key pressed. Triggering die animation.");
-            Die();
-        }
-    }
 }

@@ -177,7 +177,7 @@ public class ZombieHandler : MonoBehaviour
         if (hitTimer > 1 &&playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             if(health <=0){
-                Destroy(zombie);
+                transform.GetComponent<RagdollManager>().Die();
             }
             health -= 100;
             hitTimer = 0;
