@@ -39,7 +39,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
     public bool hasCollided;
     public enemyAnimator enemyAnimatorScript;
-
+    private float timer;
     public int MaxHealth => _maxHealth;
 
     public int Health
@@ -120,6 +120,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     }
     void Update()
     {
+        timer += Time.deltaTime;
         if(Health <=0){
             SceneManager.LoadScene("DEMO_v2");
         }
@@ -202,8 +203,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         {
             Transform swordEnemy = FindParentByName(other.gameObject.transform, "swordenemy");
             enemyAnimatorScript = swordEnemy.GetComponent<enemyAnimator>();
-            if (enemyAnimatorScript.attack)
+            if (enemyAnimatorScript.attack && timer > 1.8f)
             {
+                timer = 0;
                 Health -= 40;
                 hasCollided = true;
             }

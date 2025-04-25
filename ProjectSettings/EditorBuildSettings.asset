@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TS_Medieval_Fantasy/Demo/DEMO_v2.unity
     guid: 834bd7ef3053afe46834f69809f028f4
+  - enabled: 1
+    path: Assets/TS_Medieval_Fantasy/Demo/lv2.unity
+    guid: 13e08e95f8bfb6543bb840f40bedda29
   m_configObjects: {}
