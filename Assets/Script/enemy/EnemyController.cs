@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     public GameObject enemy;
     public GameObject player;
     public bool hasCollided;
+    private float timer;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
         if (health <= 0)
         {
             alive = false;
@@ -40,7 +42,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        if (playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
+        if (timer > 1.5f && playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             Rigidbody weaponRb = other.attachedRigidbody;
             float collisionForce = 30f; // Default force
@@ -53,6 +55,7 @@ public class EnemyController : MonoBehaviour
             HitSlowMo.Trigger(collisionForce);
             health -= 40;
             hasCollided = true;
+            timer = 0;
         }
 
     }
