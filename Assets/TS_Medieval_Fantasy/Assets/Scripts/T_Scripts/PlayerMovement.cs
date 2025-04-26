@@ -165,6 +165,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && b_Jump || b_buttonJump && b_Jump)
         {                                    // Player Jump
+            Debug.Log("Jump");
+            playerAnimator.SetTrigger("Jump");
             b_timer = true;
         }
         else if (Input.GetButtonUp("Jump") || !b_buttonJump && Input.GetButtonUp("Jump"))

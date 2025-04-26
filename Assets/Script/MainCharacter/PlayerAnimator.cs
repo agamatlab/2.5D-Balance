@@ -16,6 +16,12 @@ public class PlayerAnimator : MonoBehaviour
     Animator playerAnimator;
     MyPlayerMovement playerMovementScript;
 
+    IEnumerator ResetEmoteTrigger(string trigger)
+    {
+        yield return null; // wait one frame
+        playerAnimator.SetBool("trigger", false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +29,8 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         playerMovementScript = GetComponentInParent<MyPlayerMovement>();
         playerAnimator.SetFloat("direcitonRange", 0);
+        //playerAnimator.speed = animationSpeed; // Plays animations at 2x speed
+
     }
 
     // Used for attacks and combos
@@ -148,27 +156,29 @@ public class PlayerAnimator : MonoBehaviour
         float directionSlow = 5;
         if (horizontal > 0)
         {
-            
-            if(direction < 0)
+
+            /*if(direction < 0)
             {
                 playerAnimator.SetBool("directionChange", true);
             }
-            direction += animationConstant/directionSlow;
+            direction += animationConstant/directionSlow;*/
+            direction = 1;
         }
         else if (horizontal < 0)
         {
-            if (direction > 0)
-            {
-                playerAnimator.SetBool("directionChange", true);
-            }
-            direction -= animationConstant/ directionSlow;
+            /*if (direction > 0)
+             {
+                 playerAnimator.SetBool("directionChange", true);
+             }
+             direction -= animationConstant/ directionSlow;*/
+            direction = -1;
 
         }
         else
         {
             if (direction != 0)
             {
-                direction -=  (direction/Mathf.Abs(direction)) *animationConstant/ directionSlow;
+                //direction -=  (direction/Mathf.Abs(direction)) *animationConstant/ directionSlow;
             }
         }
 
@@ -189,8 +199,21 @@ public class PlayerAnimator : MonoBehaviour
 
         }
 
+        /*if(Input.GetButtonDown("Jump") && playerMovementScript.isGrounded)
+        {
+            playerAnimator.SetBool("jump", true);
+            playerMovementScript.isGrounded = false;
+        }
+        else
+        {
+            playerAnimator.SetBool("jump", false);
+        }*/
 
 
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            playerAnimator.SetTrigger("Emote1");
+        }
 
 
     }

@@ -178,6 +178,7 @@ public class ZombieHandler : MonoBehaviour
         {
             if(health <=0){
                 transform.GetComponent<RagdollManager>().Die();
+                transform.GetComponent<AudioSource>().Play();
             }
             health -= 100;
             hitTimer = 0;

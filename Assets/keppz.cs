@@ -13,8 +13,8 @@ public class keppz : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 new_pos = new Vector3(transform.position.x, transform.position.y, 0);
-        Debug.Log(transform.position + " " + new_pos);
-        //transform.position = new_pos;
+        Vector3 new_pos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
+        Debug.Log("LOCAL position : " + transform.localPosition + "Global " + transform.position );
+        transform.transform.localPosition = new_pos;
     }
 }
