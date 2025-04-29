@@ -65,8 +65,8 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         facingLeft = false;
 
 
-        HealthBarOffset = new Vector3(0, 1, 0);
-        BalanceUIOffset = new Vector3(0, 1.3f, 0);
+        HealthBarOffset = new Vector3(0, 2, 0);
+        BalanceUIOffset = new Vector3(0, 2.3f, 0);
         Health = 100;
         initBalanceIndicator();
         

@@ -14,7 +14,7 @@ public class keppz : MonoBehaviour
     void Update()
     {
         Vector3 new_pos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
-        Debug.Log("LOCAL position : " + transform.localPosition + "Global " + transform.position );
+        
         transform.transform.localPosition = new_pos;
     }
 }
