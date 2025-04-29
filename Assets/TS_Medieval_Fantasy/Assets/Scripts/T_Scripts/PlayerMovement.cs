@@ -59,14 +59,14 @@ public class PlayerMovement : MonoBehaviour
         // Check if we're in a stopping animation state
         isStoppingAnimation = playerAnimator.GetBool("changeDirection") ||
                               playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop") ||
-                              playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop backwards") ||
-                              playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal");
+                              playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("stop backwards") 
+                              || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal");
 
         if (isStoppingAnimation)
         {
             // Apply smooth deceleration instead of immediate stop
             Vector3 currentVelocity = rb.velocity;
-            float decelerationRate = 2.5f; // Lower value for more gradual stopping
+            float decelerationRate = 10; // Lower value for more gradual stopping
 
             // Gradually reduce velocity to zero
             float newHorizontalVelocity = Mathf.Lerp(currentVelocity.x, 0f, Time.fixedDeltaTime * decelerationRate);
