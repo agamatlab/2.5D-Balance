@@ -40,7 +40,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     public enemyAnimator enemyAnimatorScript;
 
     public int MaxHealth => _maxHealth;
-
+    public Transform PlayerBody;
     public int Health
     {
         get => _health;
@@ -115,6 +115,10 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     }
     void Update()
     {
+        transform.position = PlayerBody.position;
+        PlayerBody.localPosition = new Vector3(0,0,0);
+        Vector3 new_pos = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
+        transform.transform.localPosition = new_pos;
 
         if (balancePoint > 0)
         {

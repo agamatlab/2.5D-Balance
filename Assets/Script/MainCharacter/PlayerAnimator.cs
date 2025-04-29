@@ -15,6 +15,7 @@ public class PlayerAnimator : MonoBehaviour
 
     Animator playerAnimator;
     MyPlayerMovement playerMovementScript;
+    
 
     IEnumerator ResetEmoteTrigger(string trigger)
     {
@@ -37,12 +38,13 @@ public class PlayerAnimator : MonoBehaviour
     public float comboTimerLimit = 2f;
     private float comboTimer;
     public float attackCooldownLimit;
-    private float attackCooldown = 0;
-    private int currentCombo = 0;
+    //private float attackCooldown = 0;
+    //private int currentCombo = 0;
 
     // Update is called once per frame
     void Update()
     {
+        float balancePoint = playerMovementScript.balancePoint;
 
         // Canceling all previously  set animations
         playerAnimator.SetBool("swing1", false);
@@ -50,13 +52,7 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetBool("swing3", false);
 
         // Timer for attack cooldown and combo
-        if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
-        if (comboTimer > 0) comboTimer -= Time.deltaTime;
-
-        if (comboTimer <= 0)
-        {
-            currentCombo = 0;
-        }
+        //if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
 
 
         if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit") )
@@ -85,34 +81,26 @@ public class PlayerAnimator : MonoBehaviour
         }
 
         float horizontal = Input.GetAxis("Horizontal");
-        if (Input.GetMouseButtonDown(0) && !isSwinging && (playerMovementScript.balancePoint == 6 || playerMovementScript.isHoldingRight))
+        if (Input.GetMouseButtonDown(0) && !isSwinging )
         {
-            if (currentCombo == 0 && attackCooldown <= 0)
+            if (balancePoint==0)
             {
                 playerAnimator.SetBool("swing1", true);
-                attackCooldown = attackCooldownLimit;
-                comboTimer = comboTimerLimit;
-                currentCombo++;
-                Debug.Log("first attack");
+
             }
-            else if (currentCombo == 1 && attackCooldown <= 0)
+            else if (balancePoint < 1 && balancePoint>0)
             {
                 playerAnimator.SetBool("swing2", true);
-                attackCooldown = attackCooldownLimit;
-                comboTimer = comboTimerLimit;
-                currentCombo++;
 
-                Debug.Log("second attack");
 
             }
-            else if (currentCombo == 2 && attackCooldown <= 0)
+            else if (balancePoint < 2 && balancePoint>=1)
             {
 
                 playerAnimator.SetBool("swing3", true);
-                attackCooldown = attackCooldownLimit;
-                currentCombo = 0;
 
-                Debug.Log("third attack");
+
+
             }
             else
             {
