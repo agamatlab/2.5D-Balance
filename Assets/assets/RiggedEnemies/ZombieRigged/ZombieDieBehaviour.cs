@@ -34,7 +34,7 @@ public class RagdollManager : MonoBehaviour
 
         foreach (var col in ragdollColliders)
         {
-            col.enabled = enabled;
+            col.enabled = !enabled;
         }
 
         foreach (var col in originalColliders)

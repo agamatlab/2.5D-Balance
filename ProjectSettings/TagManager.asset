@@ -10,6 +10,8 @@ TagManager:
   - Knight
   - enemy
   - enemyweapon
+  - zombieweapon
+  - zombie
   layers:
   - Default
   - TransparentFX

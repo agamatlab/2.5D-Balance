@@ -35,8 +35,8 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     public Vector3 BalanceUIOffset;
     int _maxHealth = 100;
     int _health = 100;
+    private float hitTimer = 0;
 
-    public bool hasCollided;
     public enemyAnimator enemyAnimatorScript;
 
     public int MaxHealth => _maxHealth;
@@ -115,6 +115,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     }
     void Update()
     {
+        if(hitTimer >0){
+            hitTimer -= Time.deltaTime;
+        }
         transform.position = PlayerBody.position;
         PlayerBody.localPosition = new Vector3(0,0,0);
         Vector3 new_pos = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
@@ -176,46 +179,39 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         updateBalancePointUI();
 
     }
-    Transform FindParentByName(Transform child, string name)
+    Transform FindParentByTag(Transform child, string tag)
     {
-        if (child == null)
-            return null;
+        if (child.CompareTag(tag))
+        return child;
 
 
-        if (child.name == name)
-            return child;
+        if (child.parent == null)
+        return null;
 
 
-        return FindParentByName(child.parent, name);
+        return FindParentByTag(child.parent, tag);
     }
     void OnTriggerEnter(Collider other)
     {
-        if (hasCollided)
-        {
-            return;
-        }
 
-        if (other.gameObject.CompareTag("enemyweapon"))
+
+
+        if (other.gameObject.CompareTag("zombieweapon"))
         {
-            Transform swordEnemy = FindParentByName(other.gameObject.transform, "swordenemy");
-            enemyAnimatorScript = swordEnemy.GetComponent<enemyAnimator>();
-            if (enemyAnimatorScript.attack)
+            
+            Transform zombieT = FindParentByTag(other.gameObject.transform, "zombie");
+            Animator enemyA = zombieT.GetComponent<Animator>();
+            if (enemyA.GetCurrentAnimatorStateInfo(0).IsName("zombie attack 1") && hitTimer<=0)
             {
+                if(enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f&&enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.6f){
                 Health -= 40;
-                hasCollided = true;
+                hitTimer = 1;
+                playerAnimator.SetBool("hit", true);}
             }
         }
-
     }
 
 
-    void OnTriggerExit(Collider other)
-    {
 
-        if (other.gameObject.CompareTag("enemyweapon"))
-        {
-            hasCollided = false;
-        }
-    }
 
 }
