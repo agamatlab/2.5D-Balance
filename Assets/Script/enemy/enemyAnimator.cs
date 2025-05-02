@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class enemyAnimator : MonoBehaviour
 {
@@ -18,15 +19,17 @@ public class enemyAnimator : MonoBehaviour
     public float patrolSpeed;
     public float alertSpeed;
     public float alertRange;
-    private Transform playerBody;
+    public Transform playerBody;
     public bool runningLeft;
     public bool attack;
-
+    public EnemyController enemyController;
+    public TextMeshProUGUI breakIndicator;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         animator.SetBool("runningLeft", true);
+        animator.SetBool("break", false);
         Timer = -1f;
         alert = false;
         enemyCanvas = GetComponentInChildren<Canvas>();
@@ -35,13 +38,14 @@ public class enemyAnimator : MonoBehaviour
         alertSpeed = 0.008f;
         runningLeft = false;
         alertRange = 4f;
-        playerBody = GameObject.Find("Player").transform;
+        //playerBody = GameObject.Find("Player").transform;
         //initialize UI for alert
         RectTransform rectTransform = alertIndicator.GetComponent<RectTransform>();
         //rectTransform.anchoredPosition = new Vector2(20, -100);
         rectTransform.sizeDelta = new Vector2(16, 16);
         alertIndicator.color = Color.green;
         attack = false;
+        breakIndicator.enabled = false;
     }
 
 
@@ -65,14 +69,24 @@ public class enemyAnimator : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-
+    {        
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position + UIoffset);
         alertIndicator.transform.position = screenPosition;
         alertIndicator.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
 
 
+        if(enemyController.health <= 0){
+            breakIndicator.enabled = true;
+            alertIndicator.enabled = false;
+            animator.SetBool("break", true);
+                    breakIndicator.transform.position = screenPosition;
+            breakIndicator.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+            return;
+        }
+
         //check for player
+
+            transform.localRotation = Quaternion.Euler(0, 90, 0);
 
 
 

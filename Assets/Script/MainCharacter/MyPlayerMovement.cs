@@ -37,7 +37,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     int _health = 100;
     private float hitTimer = 0;
 
-    public enemyAnimator enemyAnimatorScript;
+
 
     public int MaxHealth => _maxHealth;
     public Transform PlayerBody;
@@ -69,7 +69,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         BalanceUIOffset = new Vector3(0, 2.3f, 0);
         Health = 100;
         initBalanceIndicator();
-        
+
     }
     void initBalanceIndicator()
     {
@@ -92,41 +92,48 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
     void updateBalancePointUI()
     {
-        if(balancePoint > 3){
-            b1.value =b2.value =b3.value = 1;
+        if (balancePoint > 3)
+        {
+            b1.value = b2.value = b3.value = 1;
         }
-        else if(balancePoint <=3 && balancePoint >=2){
-            b1.value =b2.value= 1;
-            
+        else if (balancePoint <= 3 && balancePoint >= 2)
+        {
+            b1.value = b2.value = 1;
+
             b3.value = balancePoint - 2;
         }
-        else if(balancePoint <2 && balancePoint >=1){
+        else if (balancePoint < 2 && balancePoint >= 1)
+        {
             b1.value = 1;
 
             b2.value = balancePoint - 1;
             b3.value = 0;
         }
-        else{
+        else
+        {
 
             b1.value = balancePoint;
-            
-            b2.value =b3.value = 0;
+
+            b2.value = b3.value = 0;
         }
     }
     void Update()
     {
-        if(hitTimer >0){
+        if (hitTimer > 0)
+        {
             hitTimer -= Time.deltaTime;
         }
         transform.position = PlayerBody.position;
-        PlayerBody.localPosition = new Vector3(0,0,0);
+        PlayerBody.localPosition = new Vector3(0, 0, 0);
         Vector3 new_pos = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
-        transform.transform.localPosition = new_pos;
+        transform.localPosition = new_pos;
 
         if (balancePoint > 0)
         {
-            if(!playerAniamationScript.isSwinging){
-            balancePoint -= Time.deltaTime * 0.5f;}
+            if (!playerAniamationScript.isSwinging)
+            {
+                balancePoint -= Time.deltaTime * 0.5f;
+            }
         }
         else
         {
@@ -140,9 +147,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
         healthbar.value = Health;
 
         Vector3 screenPosition2 = mainCamera.WorldToScreenPoint(transform.position + BalanceUIOffset);
-        b1.transform.position = screenPosition2+ new Vector3(-40, 0, 0);
+        b1.transform.position = screenPosition2 + new Vector3(-40, 0, 0);
         b1.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
-        b2.transform.position = screenPosition2 ;
+        b2.transform.position = screenPosition2;
         b2.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
         b3.transform.position = screenPosition2 + new Vector3(40, 0, 0);
         b3.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
@@ -182,11 +189,11 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     Transform FindParentByTag(Transform child, string tag)
     {
         if (child.CompareTag(tag))
-        return child;
+            return child;
 
 
         if (child.parent == null)
-        return null;
+            return null;
 
 
         return FindParentByTag(child.parent, tag);
@@ -198,15 +205,33 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
 
         if (other.gameObject.CompareTag("zombieweapon"))
         {
-            
+
             Transform zombieT = FindParentByTag(other.gameObject.transform, "zombie");
             Animator enemyA = zombieT.GetComponent<Animator>();
-            if (enemyA.GetCurrentAnimatorStateInfo(0).IsName("zombie attack 1") && hitTimer<=0)
+            if (enemyA.GetCurrentAnimatorStateInfo(0).IsName("zombie attack 1") && hitTimer <= 0)
             {
-                if(enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f&&enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.6f){
-                Health -= 40;
-                hitTimer = 1;
-                playerAnimator.SetBool("hit", true);}
+                if (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f && enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.6f)
+                {
+                    Health -= 40;
+                    hitTimer = 1;
+                    playerAnimator.SetBool("hit", true);
+                }
+            }
+        }
+
+        if (other.gameObject.CompareTag("enemyweapon"))
+        {
+
+            Transform zombieT = FindParentByTag(other.gameObject.transform, "enemy");
+            Animator enemyA = zombieT.GetComponent<Animator>();
+            if ((enemyA.GetCurrentAnimatorStateInfo(0).IsName("swing normal") || enemyA.GetCurrentAnimatorStateInfo(0).IsName("swing backward normal"))&& hitTimer <= 0 )
+            {
+                if (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f && enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.5f)
+                {
+                    Health -= 40;
+                    hitTimer = 1;
+                    playerAnimator.SetBool("hit", true);
+                }
             }
         }
     }
