@@ -226,7 +226,7 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
             Animator enemyA = zombieT.GetComponent<Animator>();
             if ((enemyA.GetCurrentAnimatorStateInfo(0).IsName("swing normal") || enemyA.GetCurrentAnimatorStateInfo(0).IsName("swing backward normal"))&& hitTimer <= 0 )
             {
-                if (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f && enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.5f)
+                if ((enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) >= 0.3f && (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) <= 0.6f)
                 {
                     Health -= 40;
                     hitTimer = 1;
