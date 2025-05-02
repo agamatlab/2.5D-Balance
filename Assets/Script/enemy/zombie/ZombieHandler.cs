@@ -25,7 +25,7 @@ public class ZombieHandler : MonoBehaviour
     public Animator animator;
     //public float alertSpeed = 0.008f;
     public bool hasCollided = false;
-    public PlayerAnimator playerAnimator;
+    public Animator playerAnimator;
     public TextMeshProUGUI breakIndicator;
         private float hitTimer;
     public enum AttackState
@@ -173,8 +173,8 @@ public class ZombieHandler : MonoBehaviour
         {
             return;
         }
-        
-        if (hitTimer > 1 &&playerAnimator.isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
+        bool isSwinging = playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack");
+        if (hitTimer > 1 &&isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             if(health <=0){
                 transform.GetComponent<RagdollManager>().Die();

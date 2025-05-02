@@ -22,7 +22,25 @@ public class RagdollManager : MonoBehaviour
         originalColliders = GetComponents<Collider>();
 
         // Disable ragdoll by default
-        SetRagdollState(false);
+        foreach (var rb in ragdollRigidbodies)
+        {
+            rb.isKinematic = true;
+        }
+
+        foreach (var col in ragdollColliders)
+        {
+            col.enabled = true;
+        }
+
+        foreach (var col in originalColliders)
+        {
+            col.enabled = true;
+        }
+
+        if (characterController != null)
+        {
+            characterController.enabled = true;
+        }
     }
 
     void SetRagdollState(bool enabled)
@@ -34,7 +52,7 @@ public class RagdollManager : MonoBehaviour
 
         foreach (var col in ragdollColliders)
         {
-            col.enabled = !enabled;
+            col.enabled = enabled;
         }
 
         foreach (var col in originalColliders)
