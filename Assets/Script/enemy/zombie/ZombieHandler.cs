@@ -78,7 +78,7 @@ public class ZombieHandler : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(0.1f * Screen.width, 0.02f * Screen.width);
         alertIndicator.color = Color.green;
 
-        attackRange = 0.6f;
+        attackRange = 0.8f;
         alertRange = 3f;
         animator = GetComponent<Animator>();
         breakIndicator.enabled = false;

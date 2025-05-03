@@ -55,7 +55,7 @@ public class PlayerAnimator : MonoBehaviour
         //if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
 
 
-        if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit") )
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hit")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("hitLeft") )
         {
             playerAnimator.SetBool("hit", false);
         }   

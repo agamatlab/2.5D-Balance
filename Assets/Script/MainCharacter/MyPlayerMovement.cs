@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public interface IDamageable
 {
     Vector3 Position { get; }
@@ -119,6 +119,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
     }
     void Update()
     {
+        if(Health<=0){
+            SceneManager.LoadScene("DEMO_v2");
+        }
         if (hitTimer > 0)
         {
             hitTimer -= Time.deltaTime;
@@ -210,9 +213,9 @@ public class MyPlayerMovement : MonoBehaviour, IDamagable
             Animator enemyA = zombieT.GetComponent<Animator>();
             if (enemyA.GetCurrentAnimatorStateInfo(0).IsName("zombie attack 1") && hitTimer <= 0)
             {
-                if (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f && enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.6f)
+                if (enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime% 1 >= 0.3f && enemyA.GetCurrentAnimatorStateInfo(0).normalizedTime% 1 <= 0.6f)
                 {
-                    Health -= 40;
+                    Health -= 20;
                     hitTimer = 1;
                     playerAnimator.SetBool("hit", true);
                 }
