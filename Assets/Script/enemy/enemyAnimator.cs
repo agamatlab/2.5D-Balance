@@ -35,7 +35,7 @@ public class enemyAnimator : MonoBehaviour
         enemyCanvas = GetComponentInChildren<Canvas>();
         UIoffset = new Vector3(0, 2, 0);
         patrolSpeed = 0.008f;
-        alertSpeed = 0.0016f;
+        alertSpeed = 0.016f;
         runningLeft = false;
         alertRange = 4f;
         //playerBody = GameObject.Find("Player").transform;
@@ -98,22 +98,22 @@ public class enemyAnimator : MonoBehaviour
         {
             Timer += Time.deltaTime;
             alert = checkPlayerInRange();
-            if (Timer < 2f && Timer >= 0f)
+            if (Timer < 3f && Timer >= 0f)
             {
 
                 transform.position += new Vector3(patrolSpeed, 0, 0);
                 animator.SetBool("runningLeft", false);
                 runningLeft = false;
             }
-            else if (Timer > 2f && Timer < 4f)
+            else if (Timer >= 3f && Timer < 6f)
             {
                 transform.position += new Vector3(-patrolSpeed, 0, 0);
                 animator.SetBool("runningLeft", true);
                 runningLeft = true;
             }
-            else if (Timer >= 4f)
+            else if (Timer >= 6f)
             {
-                Timer = 4f;
+                Timer = 0;
             }
             alertIndicator.color = Color.green;
         }
