@@ -46,6 +46,10 @@ public class enemyAnimator : MonoBehaviour
         alertIndicator.color = Color.green;
         attack = false;
         breakIndicator.enabled = false;
+
+        rectTransform = breakIndicator.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(0.05f * Screen.width, -0.2f * Screen.height);
+        rectTransform.sizeDelta = new Vector2(0.1f * Screen.width, 0.02f * Screen.width);
     }
 
 

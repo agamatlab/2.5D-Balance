@@ -21,7 +21,7 @@ public class Instructor : MonoBehaviour
 
         float distance = Vector2.Distance(currentPosition, playerPosition);
 
-        return distance <= 1.5f;
+        return distance <= 2.5f;
     }
 
     // Start is called before the first frame update

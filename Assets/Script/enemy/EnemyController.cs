@@ -38,11 +38,14 @@ public class EnemyController : MonoBehaviour
 
         if (hitTimer > 1 && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
-            if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt")) {
+            if(health <=0 && (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt") || playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt Left")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttackLeft") )){
+                Destroy(enemy);
+            }
+            if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt Left") ) {
                 health -= 5;
                 hitTimer = 0;
             }
-            if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack")){
+            if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttackLeft")){
                 health -= 100;
                 hitTimer = 0;
             }

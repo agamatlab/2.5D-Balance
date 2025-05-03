@@ -173,10 +173,12 @@ public class ZombieHandler : MonoBehaviour
         {
             return;
         }
-        bool isSwinging = playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack");
+        bool isSwinging = playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("swing normal") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttack")||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("SecondAtt Left") ||playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinalAttackLeft");
         if (hitTimer > 1 &&isSwinging && (other.gameObject.CompareTag("weaponR") || other.gameObject.CompareTag("weaponL")))
         {
             if(health <=0){
+                        breakIndicator.enabled = false;
+                alertIndicator.enabled = false;
                 transform.GetComponent<RagdollManager>().Die();
                 transform.GetComponent<AudioSource>().Play();
             }
